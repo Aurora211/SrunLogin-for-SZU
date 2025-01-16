@@ -35,8 +35,8 @@ This program has two main ways of running: using executable files to run, and di
     *Just login the network for once*  
 ### Use Executable File  
 The folder `dist` contains executable files for the main system platform. Just run it directly, please note that `config.yaml` must be placed in the same directory as the executable file.  
-Note: **In this method you can only start PROTECTOR mode**  
 #### Network Protector Mode
+In this mode, you need to modify your personal information in the `config.yaml` file, like username and password.  
 - **Windows**: Run following command in CMD will start the program:  
     Note: work directory is `.\dist\`  
     - `$ ./Srun_windows_x64.exe`  
@@ -95,7 +95,7 @@ Of course, the SrunLogin module is written with the call in mind. It can be impo
     ```python
     from SrunLogin import SrunLogin
     ```  
-- Instantiate a SrunLogin object  
+- Instantiate a SrunLogin object:  
     ```python
     srun = SrunLogin(
         [login_page_url,        # Login page URL
@@ -110,7 +110,7 @@ Of course, the SrunLogin module is written with the call in mind. It can be impo
         user_agent]             # User-Agent when sending requests
     )
     ```  
-    Note: All parameters during instatntiate is optional.  
+    Note: **All parameters during instatntiate is optional, unless portal server settings is changed.**  
 - Call the login function  
     ```python
     state, state_info, full_info = srun.login(
