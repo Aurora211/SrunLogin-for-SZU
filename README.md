@@ -38,11 +38,11 @@ The folder `dist` contains executable files for the main system platform. Just r
 #### Network Protector Mode
 In this mode, you need to modify your personal information in the `config.yaml` file, like username and password.  
 - **Windows**: Run following command in CMD will start the program:  
-    Note: work directory is `.\dist\`  
+    Note: `config.yaml` must be in the same directory of `Srun_windows_x64.exe`  
     - `$ ./Srun_windows_x64.exe`  
     - `$ ./Srun_windows_x64.exe --manual`  
 - **Linux**: Run following command in terminal will start the program (choose one of the command):  
-    Note: work directory is `./dist/`  
+    Note: `config.yaml` must be in the same directory of `Srun_ubuntu_x64`  
     - `$ ./Srun_ubuntu_x64`  
     - `$ ./Srun_ubuntu_x64 --manual`  
 #### Single Login Mode
