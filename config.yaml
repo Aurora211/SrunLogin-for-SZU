@@ -1,0 +1,64 @@
+auth:
+    username: ""    # 您的网络登录账号
+    password: ""    # 您的网络登录密码
+settings:
+    default_mode: 0             # 默认模式，0: 手动模式, 1: 服务模式, 2: 客户模式
+    skip_ssl_verify: false      # 跳过登录时 SSL 验证
+    request_timeout: 2          # 请求超时（单位：秒）
+    online_check_duration: 5    # 在线检测间隔（单位：秒）
+    gc_collect_interval: 60     # 垃圾回收间隔（单位：轮）
+logger:
+    debug: false                                            # 是否输出调试信息
+    format: "[%(asctime)s][%(levelname)s] - %(message)s"    # 日志格式
+    file:
+        enable: true                                        # 是否输出到文件
+        directory: "./logs"                                 # 日志目录
+        prefix: "srun"                                      # 日志前缀
+        suffix: "%Y-%m-%d.log"                              # 日志后缀
+        when: "MIDNIGHT"                                    # 日志切割时间
+        interval: 1                                         # 日志切割间隔（单位：天）
+        backup_count: 30                                    # 日志备份数量
+        encoding: "utf-8"                                   # 日志编码
+meta:
+    online_check:                                           # 在线检测配置
+        -
+            url: "https://www.baidu.com"                    # 在线检测网址
+            key: "百度一下"                                 # 在线检测关键字
+        -
+            url: "https://www.bilibili.com"
+            key: "哔哩哔哩"
+        -
+            url: "https://www.qq.com"
+            key: "腾讯"
+        -
+            url: "https://www.taobao.com"
+            key: "淘宝"
+        -
+            url: "https://www.jd.com"
+            key: "京东"
+        -
+            url: "https://www.zhihu.com"
+            key: "知乎"
+        -
+            url: "https://www.douban.com"
+            key: "豆瓣"
+    portal:                                                 # 登录门户 Portal 配置
+        domain: "https://net.szu.edu.cn"                    # 登录门户域名
+        login_page: "/srun_portal_pc"                       # 登录页面
+        challenge_api: "/cgi-bin/get_challenge"             # 获取挑战问题 API
+        login_api: "/cgi-bin/srun_portal"                   # 登录 API
+        login_parameters:                                   # 登录参数（请勿随意修改）
+            n: "200"                                        # 请勿修改
+            type: "1"                                       # 请勿修改
+            acid: "12"                                      # 根据实际情况修改
+            enc: "srun_bx1"                                 # 请勿修改
+            os: "Windows 10"                                # 根据实际情况修改
+            name: "windows"                                 # 根据实际情况修改
+            double_stack: false                             # 请勿
+        callback: "jQuery11240767708159690917"              # 回调函数（非空即可）
+        regex:                                              # 正则表达式集合（请勿随意修改）
+            page: "<script>[ \n]+var CONFIG = [\\{ \n]+([A-Za-z0-9 :'\",\\.\\-|/\n\\{\\}]+)\n[ ]+\\};[ \n]+</script>"
+            callback: "({[A-Za-z0-9\":,_\\. ]+})"
+    user_agent:                                             # 用户代理配置
+        request: "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"   # 登录门户及在线验证用
+        client: "Aurora/1.0"                                # 客户端用
