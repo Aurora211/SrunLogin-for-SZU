@@ -41,7 +41,7 @@ In this mode, you need to modify your personal information in the `config.yaml` 
     Note: work directory is `.\dist\`  
     - `$ ./Srun_windows_x64.exe`  
     - `$ ./Srun_windows_x64.exe --manual`  
-- **Linux**: Run following command in terminal will start the program:  
+- **Linux**: Run following command in terminal will start the program (choose one of the command):  
     Note: work directory is `./dist/`  
     - `$ ./Srun_ubuntu_x64`  
     - `$ ./Srun_ubuntu_x64 --manual`  
@@ -63,7 +63,7 @@ Note: For both modes, the `config.yaml` file must be placed in the same director
 - Install the required dependencies:  
     - `$ pip install -r requirements.txt`  
 - Modify the configuration file `config.yaml` according to the actual situation (details in following chapters)  
-- Run the program:  
+- Run the program (choose one of the command):  
     - `$ python main.py --manual`  
     - `$ python main.py` (If you set `settings.default_mode` to `0` in `config.yaml`)  
 #### Single Mode  
