@@ -2,6 +2,3 @@ __pycache__/
 *.pyc
 logs/
 srun*
-build/
-*.spec
-dist/
