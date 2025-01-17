@@ -32,7 +32,9 @@ srun = SrunLogin(
     skip_ssl_verify         = config['settings']['skip_ssl_verify'],
     request_timeout         = config['settings']['request_timeout'],
     login_fixed_parameters  = config['meta']['portal']['login_parameters'],
-    user_agent              = config['meta']['user_agent']['request']
+    user_agent              = config['meta']['user_agent']['request'],
+    http_proxy              = config['meta']['proxy']['login']['http'],
+    https_proxy             = config['meta']['proxy']['login']['https']
 )
 
 state, _, _ = srun.login(args.username, args.password)
