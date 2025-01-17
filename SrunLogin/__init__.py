@@ -45,6 +45,10 @@ class SrunLogin:
         self.skip_ssl_verify            = kwargs.get("skip_ssl_verify", False)
         self.time_out                   = kwargs.get("request_timeout", 5)
         self.add_time_stamp_to_callback = kwargs.get("add_time_stamp_to_callback", True)
+        self.proxys                     = {
+            "http": None if kwargs.get("http_proxy", None) == "None" else kwargs.get("http_proxy", None),
+            "https": None if kwargs.get("https_proxy", None) == "None" else kwargs.get("https_proxy", None)
+        }
         self.login_success_keypair      = (
             kwargs.get("login_success_key", "suc_msg"),
             kwargs.get("login_success_value", "login_ok")
@@ -125,7 +129,7 @@ class SrunLogin:
         return login_state, login_status, info
 
     def __get_login_page(self) -> requests.Response:
-        return requests.get(self.url_login_page, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify)
+        return requests.get(self.url_login_page, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify, proxies=self.proxys)
     def __get_login_config(self) -> Dict:
         config = {}
         login_page = self.__get_login_page().text
@@ -156,7 +160,7 @@ class SrunLogin:
             "ip": ip,
             "_": int(time.time() * 1000)
         }
-        return requests.get(self.url_challenge_api, params=params, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify)
+        return requests.get(self.url_challenge_api, params=params, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify, proxies=self.proxys)
     def __get_challenge_config(self, username: str, ip: str, add_time_stamp_to_callback: bool = True) -> str:
         challenge = self.__get_challenge_api(username, ip, add_time_stamp_to_callback).text
         config_raw = re.search(self.regex_callback, challenge).group(1)
@@ -246,7 +250,7 @@ class SrunLogin:
             "captchaVal": "",
             "_": int(time.time() * 1000)
         }
-        return requests.get(self.url_login_api, params=params, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify)
+        return requests.get(self.url_login_api, params=params, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify, proxies=self.proxys)
     def __parse_login_response(self, response: requests.Response) -> Dict:
         response_text = response.text
         status_raw = re.search(self.regex_callback, response_text).group(1)

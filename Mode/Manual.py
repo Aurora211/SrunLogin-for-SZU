@@ -36,11 +36,15 @@ class Manual:
             skip_ssl_verify         = self.config['settings']['skip_ssl_verify'],
             request_timeout         = self.config['settings']['request_timeout'],
             login_fixed_parameters  = self.config['meta']['portal']['login_parameters'],
-            user_agent              = self.config['meta']['user_agent']['request']
+            user_agent              = self.config['meta']['user_agent']['request'],
+            http_proxy              = self.config['meta']['proxy']['login']['http'],
+            https_proxy             = self.config['meta']['proxy']['login']['https']
         )
         self.online = Online(
             url_config              = self.config['meta']['online_check'],
-            timeout                 = self.config['settings']['request_timeout']
+            timeout                 = self.config['settings']['request_timeout'],
+            http_proxy              = self.config['meta']['proxy']['online_check']['http'],
+            https_proxy             = self.config['meta']['proxy']['online_check']['https']
         )
 
         self.gc_collect_interval    = self.config['settings']['gc_collect_interval']
