@@ -107,7 +107,9 @@ Of course, the SrunLogin module is written with the call in mind. It can be impo
         skip_ssl_verify,        # Skip SSL verification when sending requests
         request_timeout,        # Request timeout
         login_fixed_parameters, # Fixed parameters when sending login requests  (More details in config.yaml)
-        user_agent]             # User-Agent when sending requests
+        user_agent,             # User-Agent when sending requests
+        http_proxy,             # HTTP Proxy when sending requests
+        https_proxy]            # HTTPS Proxy when sending requests
     )
     ```  
     Note: **All parameters during instatntiate is optional, unless portal server settings is changed.**  
