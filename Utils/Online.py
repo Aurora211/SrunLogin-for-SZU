@@ -17,6 +17,11 @@ class Online:
         self.config                 = kwargs.get("url_config", [{"url": "https://www.baidu.com", "key": "百度一下"}])
         # Optional Parameters
         self.timeout                = kwargs.get('timeout', 5)
+        self.skip_ssl_verify        = kwargs.get('skip_ssl_verify', False)
+        self.proxys                 = {
+            'http': None if kwargs.get('http_proxy', None) == "None" else kwargs.get('http_proxy', None),
+            'https': None if kwargs.get('https_proxy', None) == "None" else kwargs.get('https_proxy', None)
+        }
         self.header                 = {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
@@ -29,7 +34,7 @@ class Online:
             url = self.config[i]['url']
             key = self.config[i]['key']
             try:
-                response = requests.get(url, headers=self.header, timeout=self.timeout)
+                response = requests.get(url, headers=self.header, timeout=self.timeout, verify=not self.skip_ssl_verify, proxies=self.proxys)
                 if key in response.text:
                     pass_count += 1
             except requests.exceptions.RequestException:

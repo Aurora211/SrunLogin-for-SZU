@@ -33,7 +33,7 @@ if config['logger']['file']['enable']:
                 format=config['logger']['format']
             ),
             logging_file_handler(
-                debug=config['logger']['debug'],
+                debug=config['logger']['file']['debug'],
                 format=config['logger']['format'],
                 directory=config['logger']['file']['directory'],
                 file_prefix=config['logger']['file']['prefix'],

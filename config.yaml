@@ -8,9 +8,10 @@ settings:
     online_check_duration: 5    # 在线检测间隔（单位：秒）
     gc_collect_interval: 60     # 垃圾回收间隔（单位：轮）
 logger:
-    debug: false                                            # 是否输出调试信息
+    debug: false                                            # 控制台是否输出调试信息
     format: "[%(asctime)s][%(levelname)s] - %(message)s"    # 日志格式
     file:
+        debug: true                                         # 文件是否输出调试日志
         enable: true                                        # 是否输出到文件
         directory: "./logs"                                 # 日志目录
         prefix: "srun"                                      # 日志前缀
@@ -37,9 +38,6 @@ meta:
             url: "https://www.jd.com"
             key: "京东"
         -
-            url: "https://www.zhihu.com"
-            key: "知乎"
-        -
             url: "https://www.douban.com"
             key: "豆瓣"
     portal:                                                 # 登录门户 Portal 配置
@@ -62,3 +60,10 @@ meta:
     user_agent:                                             # 用户代理配置
         request: "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"   # 登录门户及在线验证用
         client: "Aurora/1.0"                                # 客户端用
+    proxy:                                                  # 代理配置
+        online_check:                                       # 在线检测代理
+            http: "None"                                    # HTTP 代理
+            https: "None"                                   # HTTPS 代理
+        login:                                              # 登录代理
+            http: "None"                                    # HTTP 代理
+            https: "None"                                   # HTTPS 代理
