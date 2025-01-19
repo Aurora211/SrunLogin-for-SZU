@@ -47,10 +47,10 @@ In this mode, you need to modify your personal information in the `config.yaml` 
     - `$ ./Srun_ubuntu_x64 --manual`  
 #### Single Login Mode
 - **Windows**: Run following command in CMD will let the current machine login to the network:  
-    Note: work directory is `.\dist\`  
+    Note: `config.yaml` must be in the same directory of `SrunLogin_windows_x64.exe`  
     - `$ ./SrunLogin_windows_x64.exe -u <username> -p <password>`
 - **Linux**: Run following command in terminal will let the current machine login to the network:  
-    Note: work directory is `./dist/`  
+    Note: `config.yaml` must be in the same directory of `SrunLogin_ubuntu_x64`  
     - `$ ./SrunLogin_ubuntu_x64 -u <username> -p <password>`
 ### Run Python Source Code  
 In this operating mode, there are two modes to choose from: protection mode and single mode.  
