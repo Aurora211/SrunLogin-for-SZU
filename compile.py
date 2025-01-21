@@ -6,7 +6,7 @@ args = parser.parse_args()
 import os
 import logging
 import platform
-import PyInstaller.__main__
+import subprocess
 
 logging.basicConfig(level="INFO", format="[%(asctime)s][%(levelname)s] - %(message)s")
 logger = logging.getLogger(__name__)
@@ -20,14 +20,14 @@ if os.path.exists("single.spec"):
     os.remove("single.spec")
 
 logger.info("Generating console parameters...")
-main_args = [ "main.py", "--onefile", "--clean", "--name=main", "--distpath=dist", "--noconsole", ]
-single_args = [ "single.py", "--onefile", "--clean", "--name=single", "--distpath=dist", "--noconsole",]
+main_args = [ "main.py", "--onefile", "--clean", "--name=main", "--distpath=dist", "--log-level=WARN", ]
+single_args = [ "single.py", "--onefile", "--clean", "--name=single", "--distpath=dist", "--log-level=WARN",]
 
 try:
     logger.info("Compiling main.py...")
-    PyInstaller.__main__.run(main_args)
+    subprocess.run(["pyinstaller"] + main_args)
     logger.info("Compiling single.py...")
-    PyInstaller.__main__.run(single_args)
+    subprocess.run(["pyinstaller"] + single_args)
 except Exception as e:
     logger.warning(f"Compile failed: {e}")
     exit(1)
