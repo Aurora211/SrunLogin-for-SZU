@@ -15,8 +15,16 @@ parser.add_argument("-u", "--username", type=str, help="Network username", requi
 parser.add_argument("-p", "--password", type=str, help="Network Password", required=True)
 args = parser.parse_args()
 
-# Configuration file for the project
+# Configuration file check and generation
+import os
 import yaml
+if not os.path.exists('config.yaml'):
+    print("Configuration file not found, generating a new one.")
+    from Utils.Config import GenerateConfig
+    GenerateConfig("", "")
+    print("Configuration file generated successfully.")
+
+# Configuration file for the project
 with open('config.yaml', 'r', encoding='utf-8') as f:
     config = yaml.safe_load(f)
 
