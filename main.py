@@ -16,8 +16,18 @@ parser.add_argument("--client", action="store_true", help="Run as client")
 parser.add_argument("--manual", action="store_true", help="Run manually, fully trust the configuration file")
 args = parser.parse_args()
 
-# Configuration file for the project
+# Configuration file check and generation
+import os
 import yaml
+if not os.path.exists('config.yaml'):
+    print("Configuration file not found, generating a new one.")
+    username = input("Please enter your username: ")
+    password = input("Please enter your password: ")
+    from Utils.Config import GenerateConfig
+    GenerateConfig(username, password)
+    print("Configuration file generated successfully.")
+
+# Configuration file for the project
 with open('config.yaml', 'r', encoding='utf-8') as f:
     config = yaml.safe_load(f)
 

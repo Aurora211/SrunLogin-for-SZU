@@ -3,6 +3,14 @@ This program is designed to crack the login function of the Srun network managem
 
 Note: **This program has been optimized specifically for the Srun network management system at Shenzhen University**  
 
+## Features  
+
+- [x] **Automatic Login**: Automatically log in to the network when the network is disconnected  
+- [x] **Single Login**: Just login the network for once, typically used for login in the server terminal  
+- [x] **Fully Support System Proxy**: Support HTTP and HTTPS proxy settings, can be used in a network environment with proxy
+- [x] **DNS Compatibility**: Compatible with DNS settings, can be used in a network environment with customized DNS settings
+- [ ] **ACID Auto Detection**: Automatically detect the ACID value of the network login page, no need to manually find it
+
 ## File Introduction  
 - **dist**: Contains compiled executable files  
 - **logs**: Program log storage area  
@@ -34,7 +42,7 @@ This program has two main ways of running: using executable files to run, and di
     - Single Login Mode:  
     *Just login the network for once*  
 ### Use Executable File  
-The folder `dist` contains executable files for the main system platform. Just run it directly, please note that `config.yaml` must be placed in the same directory as the executable file.  
+Just run it directly, please note that `config.yaml` must be placed in the same directory as the executable file.  
 #### Network Protector Mode
 In this mode, you need to modify your personal information in the `config.yaml` file, like username and password.  
 - **Windows**: Run following command in CMD will start the program:  
@@ -98,18 +106,23 @@ Of course, the SrunLogin module is written with the call in mind. It can be impo
 - Instantiate a SrunLogin object:  
     ```python
     srun = SrunLogin(
-        [login_page_url,        # Login page URL
-        challenge_api_url,      # Challenge API URL
-        login_api_url,          # Login API URL
-        callback_parse_regex,   # Callback page parse regex
-        page_parse_regex,       # Login page parse regex
-        callback_str,           # Callback string (all fine unless its empty)
-        skip_ssl_verify,        # Skip SSL verification when sending requests
-        request_timeout,        # Request timeout
-        login_fixed_parameters, # Fixed parameters when sending login requests  (More details in config.yaml)
-        user_agent,             # User-Agent when sending requests
-        http_proxy,             # HTTP Proxy when sending requests
-        https_proxy]            # HTTPS Proxy when sending requests
+        [login_page_url,            # Login page URL
+        challenge_api_url,          # Challenge API URL
+        login_api_url,              # Login API URL
+        callback_parse_regex,       # Callback page parse regex
+        page_parse_regex,           # Login page parse regex
+        callback_str,               # Callback string (all fine unless its empty)
+        skip_ssl_verify,            # Skip SSL verification when sending requests
+        timeout,                    # Request timeout
+        add_time_stamp_to_callback, # Add timestamp to callback string
+        login_success_key,          # Key of login success value
+        login_success_value,        # Value of login success key
+        nameservers,                # Nameservers when sending requests
+        hosts,                      # Hosts when executing local DNS resolution
+        login_fixed_parameters,     # Fixed parameters when sending login requests  (More details in config.yaml)
+        user_agent,                 # User-Agent when sending requests
+        http_proxy,                 # HTTP Proxy when sending requests
+        https_proxy]                # HTTPS Proxy when sending requests
     )
     ```  
     Note: **All parameters during instatntiate is optional, unless portal server settings is changed.**  
