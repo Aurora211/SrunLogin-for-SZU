@@ -7,56 +7,56 @@
 # Version: 0.1.0
 # =========================================
 
-import requests
 import re
-import logging
 import json
-from typing import List, Dict, Tuple
 import time
+import logging
+import requests
+from typing import List, Dict, Tuple
 
 if __name__ == "__main__":
-    from Encryption import Base64, MD5, SHA1, Xencode
     from DNS import CustomDnsRequestHandler
+    from Encryption import Base64, MD5, SHA1, Xencode
 else:
-    from .Encryption import Base64, MD5, SHA1, Xencode
     from .DNS import CustomDnsRequestHandler
+    from .Encryption import Base64, MD5, SHA1, Xencode
 
 logger = logging.getLogger(__name__)
 
 class SrunLogin:
     def __init__(
             self,
-            login_page_url: str = "https://net.szu.edu.cn/srun_portal_pc",
-            challenge_api_url: str = "https://net.szu.edu.cn/cgi-bin/get_challenge",
-            login_api_url: str = "https://net.szu.edu.cn/cgi-bin/srun_portal",
-            page_parse_regex: str = r"<script>[ \n]+var CONFIG = [\{ \n]+([A-Za-z0-9 :'\",\.\-|/\n\{\}]+)\n[ ]+\};[ \n]+</script>",
-            callback_parse_regex: str = r"({[A-Za-z0-9\":,_\. ]+})",
-            callback_str: str = "callback",
-            login_fixed_parameters: Dict = {
-                "n": "200",
-                "type": "1",
-                "acid": "2",
-                "enc": "srun_bx1",
-                "os": "Windows 10",
-                "name": "windows",
-                "double_stack": False,
+            login_page_url             : str = "https://net.szu.edu.cn/srun_portal_pc",
+            challenge_api_url          : str = "https://net.szu.edu.cn/cgi-bin/get_challenge",
+            login_api_url              : str = "https://net.szu.edu.cn/cgi-bin/srun_portal",
+            page_parse_regex           : str = r"<script>[ \n]+var CONFIG = [\{ \n]+([A-Za-z0-9 :'\",\.\-|/\n\{\}]+)\n[ ]+\};[ \n]+</script>",
+            callback_parse_regex       : str = r"({[A-Za-z0-9\":,_\. ]+})",
+            callback_str               : str = "callback",
+            login_fixed_parameters     : Dict = {
+                "n"            : "200",
+                "type"         : "1",
+                "acid"         : "2",
+                "enc"          : "srun_bx1",
+                "os"           : "Windows 10",
+                "name"         : "windows",
+                "double_stack" : False,
             },
-            skip_ssl_verify: bool = False,
-            timeout: int = 5,
-            add_time_stamp_to_callback: bool = True,
-            http_proxy: str | None = None,
-            https_proxy: str | None = None,
-            login_success_key: str = "suc_msg",
-            login_success_value: str = "login_ok",
-            user_agent: str = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-            nameservers: List[str] = ["192.168.247.6", "192.168.247.26"],
-            hosts: Dict[str, str] = {},
+            skip_ssl_verify            : bool = False,
+            timeout                    : int = 5,
+            add_time_stamp_to_callback : bool = True,
+            http_proxy                 : str | None = None,
+            https_proxy                : str | None = None,
+            login_success_key          : str = "suc_msg",
+            login_success_value        : str = "login_ok",
+            user_agent                 : str = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            nameservers                : List[str] = ["192.168.247.6", "192.168.247.26"],
+            hosts                      : Dict[str, str] = {},
             **kwargs
     ) -> None:
         # Essential URLs
-        self.url_login_page     = login_page_url
-        self.url_challenge_api  = challenge_api_url
-        self.url_login_api      = login_api_url
+        self.url_login_page    = login_page_url
+        self.url_challenge_api = challenge_api_url
+        self.url_login_api     = login_api_url
         # Essential Regex
         self.regex_page     = page_parse_regex
         self.regex_callback = callback_parse_regex
@@ -68,22 +68,22 @@ class SrunLogin:
         self.time_out                   = timeout
         self.add_time_stamp_to_callback = add_time_stamp_to_callback
         self.proxys                     = {
-            "http": None if http_proxy == "None" else http_proxy,
-            "https": None if https_proxy == "None" else https_proxy
+            "http"  : None if http_proxy  == "None" else http_proxy,
+            "https" : None if https_proxy == "None" else https_proxy
         }
         self.login_success_keypair      = (
             login_success_key,
             login_success_value
         )
         self.header                     = {
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache",
-            "User-Agent": user_agent
+            "Cache-Control" : "no-cache",
+            "Pragma"        : "no-cache",
+            "User-Agent"    : user_agent
         }
         # DNS Handler
-        self.dns_handler = CustomDnsRequestHandler(
-            nameservers=nameservers,
-            hosts=hosts,
+        self.dns_handler                = CustomDnsRequestHandler(
+            nameservers = nameservers,
+            hosts       = hosts,
         )
     def login(
             self,
@@ -91,11 +91,11 @@ class SrunLogin:
             password: str,
     ):
         info = {
-            "LoginIP": None,
-            "ChallengeToken": None,
-            "EncryptedLoginInfo": None,
-            "EncryptedPasswordInfo": None,
-            "EncryptedChecksumInfo": None
+            "LoginIP"               : None,
+            "ChallengeToken"        : None,
+            "EncryptedLoginInfo"    : None,
+            "EncryptedPasswordInfo" : None,
+            "EncryptedChecksumInfo" : None
         }
         # Stage 1
         logger.debug("Stage 1: Parse login page to get login config")
@@ -158,11 +158,11 @@ class SrunLogin:
     def __get_login_page(self) -> requests.Response:
         return self.dns_handler.request_with_dns_resolver(
             "GET",
-            url=self.url_login_page,
-            headers=self.header,
-            timeout=self.time_out,
-            verify=not self.skip_ssl_verify,
-            proxies=self.proxys
+            url     = self.url_login_page,
+            headers = self.header,
+            timeout = self.time_out,
+            verify  = not self.skip_ssl_verify,
+            proxies = self.proxys
         )
     def __get_login_config(self) -> Dict:
         config = {}
@@ -181,6 +181,7 @@ class SrunLogin:
             elif value.startswith("{") and value.endswith("}"):
                 value = json.loads(value)
             config[key] = value
+        logger.debug(f"Login Config: {config}")
         return config
     def __get_ip(self, login_config: Dict | None = None) -> str:
         if login_config is None:
@@ -196,17 +197,18 @@ class SrunLogin:
         }
         return self.dns_handler.request_with_dns_resolver(
             "GET",
-            url=self.url_challenge_api,
-            params=params,
-            headers=self.header,
-            timeout=self.time_out,
-            verify=not self.skip_ssl_verify,
-            proxies=self.proxys
+            url     = self.url_challenge_api,
+            params  = params,
+            headers = self.header,
+            timeout = self.time_out,
+            verify  = not self.skip_ssl_verify,
+            proxies = self.proxys
         )
     def __get_challenge_config(self, username: str, ip: str, add_time_stamp_to_callback: bool = True) -> str:
         challenge = self.__get_challenge_api(username, ip, add_time_stamp_to_callback).text
         config_raw = re.search(self.regex_callback, challenge).group(1)
         config = json.loads(config_raw)
+        logger.debug(f"Challenge Config: {config}")
         return config
     def __get_token(self, username: str, ip: str, challenge_config: Dict | None = None, add_time_stamp_to_callback: bool = True) -> str:
         if challenge_config is None:
@@ -217,24 +219,32 @@ class SrunLogin:
         if enc_ver != "srun_bx1":
             raise ValueError(f"Unsupported enc_ver: {enc_ver}")
         params = {
-            "username": username,
-            "password": password,
-            "ip": ip,
-            "acid": acid,
-            "enc_ver": enc_ver
+            "username" : username,
+            "password" : password,
+            "ip"       : ip,
+            "acid"     : acid,
+            "enc_ver"  : enc_ver
         }
         info = re.sub("'", '"', str(params))
-        return re.sub(" ", "", info)
+        generated_info = re.sub(" ", "", info)
+        logger.debug(f"Generated Info: {generated_info}")
+        return generated_info
     def __encrypt_info(self, info: str, token: str, enc_ver: str = "srun_bx1") -> str:
         if enc_ver != "srun_bx1":
             raise ValueError(f"Unsupported enc_ver: {enc_ver}")
         if enc_ver == "srun_bx1":
-            return "{SRBX1}" + Base64(Xencode(info, token))
+            encrypted_info = "{SRBX1}" + Base64(Xencode(info, token))
+        logger.debug(f"Encrypted Info: {encrypted_info}")
+        return encrypted_info
 
     def __generate_password_hash(self, password: str, token: str) -> str:
-        return MD5(password, token)
+        password_hash = MD5(password, token)
+        logger.debug(f"Password Hash: {password_hash}")
+        return password_hash
     def __encrypt_password_hash(self, password_hash: str) -> str:
-        return "{MD5}" + password_hash
+        encrypted_password_hash = "{MD5}" + password_hash
+        logger.debug(f"Encrypted Password Hash: {encrypted_password_hash}")
+        return encrypted_password_hash
 
     def __generate_checksum(
             self,
@@ -257,7 +267,9 @@ class SrunLogin:
             token + encrypted_info
         return checksum
     def __encrypt_checksum(self, checksum: str) -> str:
-        return SHA1(checksum)
+        encrypted_checksum = SHA1(checksum)
+        logger.debug(f"Encrypted Checksum: {encrypted_checksum}")
+        return encrypted_checksum
 
     def __send_login_request(
             self,
@@ -275,36 +287,37 @@ class SrunLogin:
             add_time_stamp_to_callback: bool = True,
     ) -> requests.Response:
         params = {
-            "callback": self.callback_str + "_" + str(int(time.time() * 1000)) if add_time_stamp_to_callback else self.callback_str,
-            "action": "login",
-            "username": username,
-            "password": encrypted_password_hash,
-            "os": os,
-            "name": name,
-            "nas_ip": "",
-            "double_stack": "0" if not double_stack else "1",
-            "chksum": encrypted_checksum,
-            "info": encrypted_info,
-            "ac_id": acid,
-            "ip": ip,
-            "n": n,
-            "type": vtype,
-            "captchaVal": "",
-            "_": int(time.time() * 1000)
+            "callback"     : self.callback_str + "_" + str(int(time.time() * 1000)) if add_time_stamp_to_callback else self.callback_str,
+            "action"       : "login",
+            "username"     : username,
+            "password"     : encrypted_password_hash,
+            "os"           : os,
+            "name"         : name,
+            "nas_ip"       : "",
+            "double_stack" : "0" if not double_stack else "1",
+            "chksum"       : encrypted_checksum,
+            "info"         : encrypted_info,
+            "ac_id"        : acid,
+            "ip"           : ip,
+            "n"            : n,
+            "type"         : vtype,
+            "captchaVal"   : "",
+            "_"            : int(time.time() * 1000)
         }
         return self.dns_handler.request_with_dns_resolver(
             "GET",
-            url=self.url_login_api,
-            params=params,
-            headers=self.header,
-            timeout=self.time_out,
-            verify=not self.skip_ssl_verify,
-            proxies=self.proxys
+            url     = self.url_login_api,
+            params  = params,
+            headers = self.header,
+            timeout = self.time_out,
+            verify  = not self.skip_ssl_verify,
+            proxies = self.proxys
         )
     def __parse_login_response(self, response: requests.Response) -> Dict:
         response_text = response.text
         status_raw = re.search(self.regex_callback, response_text).group(1)
         status = json.loads(status_raw)
+        logger.debug(f"Login Data: {status}")
         if self.login_success_keypair[0] in status:
             if status[self.login_success_keypair[0]] == self.login_success_keypair[1]:
                 return True, status

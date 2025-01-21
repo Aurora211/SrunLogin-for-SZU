@@ -9,7 +9,6 @@
 import gc
 import time
 import logging
-
 from typing import Dict
 
 from SrunLogin import SrunLogin
@@ -67,6 +66,7 @@ class Manual:
             else:
                 logger.warning("Online Check Failed, Conducting Login")
                 state, response, info = self.srun.login(self.username, self.password)
+                logger.debug("Login Response: {}".format(response))
                 if state:
                     logger.info("Login Success")
                 else:

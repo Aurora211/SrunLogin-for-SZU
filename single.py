@@ -23,18 +23,23 @@ with open('config.yaml', 'r', encoding='utf-8') as f:
 from SrunLogin import SrunLogin
 
 srun = SrunLogin(
-    login_page_url          = config['meta']['portal']['domain'] + config['meta']['portal']['login_page'],
-    challenge_api_url       = config['meta']['portal']['domain'] + config['meta']['portal']['challenge_api'],
-    login_api_url           = config['meta']['portal']['domain'] + config['meta']['portal']['login_api'],
-    callback_parse_regex    = config['meta']['portal']['regex']['callback'],
-    page_parse_regex        = config['meta']['portal']['regex']['page'],
-    callback_str            = config['meta']['portal']['callback'],
-    skip_ssl_verify         = config['settings']['skip_ssl_verify'],
-    request_timeout         = config['settings']['request_timeout'],
-    login_fixed_parameters  = config['meta']['portal']['login_parameters'],
-    user_agent              = config['meta']['user_agent']['request'],
-    http_proxy              = config['meta']['proxy']['login']['http'],
-    https_proxy             = config['meta']['proxy']['login']['https']
+    login_page_url             = config['meta']['portal']['domain'] + config['meta']['portal']['login_page'],
+    challenge_api_url          = config['meta']['portal']['domain'] + config['meta']['portal']['challenge_api'],
+    login_api_url              = config['meta']['portal']['domain'] + config['meta']['portal']['login_api'],
+    callback_parse_regex       = config['meta']['portal']['regex']['callback'],
+    page_parse_regex           = config['meta']['portal']['regex']['page'],
+    callback_str               = config['meta']['portal']['callback'],
+    skip_ssl_verify            = config['settings']['skip_ssl_verify'],
+    timeout                    = config['settings']['request_timeout'],
+    add_time_stamp_to_callback = config['meta']['portal']['add_time_stamp_to_callback'],
+    login_success_key          = config['meta']['portal']['login_success']['key'],
+    login_success_value        = config['meta']['portal']['login_success']['value'],
+    nameservers                = config['meta']['portal']['nameservers'],
+    hosts                      = config['meta']['portal']['hosts'],
+    login_fixed_parameters     = config['meta']['portal']['login_parameters'],
+    user_agent                 = config['meta']['user_agent']['request'],
+    http_proxy                 = config['meta']['proxy']['login']['http'],
+    https_proxy                = config['meta']['proxy']['login']['https']
 )
 
 state, _, _ = srun.login(args.username, args.password)

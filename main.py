@@ -29,19 +29,19 @@ if config['logger']['file']['enable']:
         level="DEBUG" if config['logger']['debug'] else "INFO",
         handlers=[
             logging_console_handler(
-                debug=config['logger']['debug'],
-                format=config['logger']['format']
+                debug  = config['logger']['debug'],
+                format = config['logger']['format']
             ),
             logging_file_handler(
-                debug=config['logger']['file']['debug'],
-                format=config['logger']['format'],
-                directory=config['logger']['file']['directory'],
-                file_prefix=config['logger']['file']['prefix'],
-                suffix=config['logger']['file']['suffix'],
-                when=config['logger']['file']['when'],
-                interval=config['logger']['file']['interval'],
-                backup_count=config['logger']['file']['backup_count'],
-                encoding=config['logger']['file']['encoding']
+                debug        = config['logger']['file']['debug'],
+                format       = config['logger']['format'],
+                directory    = config['logger']['file']['directory'],
+                file_prefix  = config['logger']['file']['prefix'],
+                suffix       = config['logger']['file']['suffix'],
+                when         = config['logger']['file']['when'],
+                interval     = config['logger']['file']['interval'],
+                backup_count = config['logger']['file']['backup_count'],
+                encoding     = config['logger']['file']['encoding']
             )
         ]
     )
@@ -50,8 +50,8 @@ else:
         level="DEBUG" if config['logger']['debug'] else "INFO",
         handlers=[
             logging_console_handler(
-                debug=config['logger']['debug'],
-                format=config['logger']['format']
+                debug  = config['logger']['debug'],
+                format = config['logger']['format']
             )
         ]
     )
