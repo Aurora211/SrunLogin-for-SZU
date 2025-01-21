@@ -17,7 +17,20 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": ["--manual"]
+            "args": [
+                "--manual"
+            ]
+        },
+        {
+            "name": "Compile",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "compile.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--version",
+                "${command:pickArgs}"
+            ]
         },
         {
             "name": "Current",

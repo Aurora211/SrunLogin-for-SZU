@@ -7,6 +7,7 @@ settings:
     request_timeout: 2          # 请求超时（单位：秒）
     online_check_duration: 5    # 在线检测间隔（单位：秒）
     gc_collect_interval: 60     # 垃圾回收间隔（单位：轮）
+    online_check_threshold: 0.9 # 不在线站点容忍度（值越接近1，容忍度越低）
 logger:
     debug: false                                            # 控制台是否输出调试信息
     format: "[%(asctime)s][%(levelname)s] - %(message)s"    # 日志格式

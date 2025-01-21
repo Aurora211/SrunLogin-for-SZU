@@ -10,7 +10,8 @@ Config_Template = {
         'skip_ssl_verify': False,
         'request_timeout': 2,
         'online_check_duration': 5,
-        'gc_collect_interval': 60
+        'gc_collect_interval': 60,
+        'online_check_threshold': 0.9
     },
     'logger': {
         'debug': False,

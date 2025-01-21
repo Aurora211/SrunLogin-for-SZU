@@ -58,7 +58,7 @@ class Manual:
         last_online_check = False
         while not self.stop:
             gc_collect_counter += 1
-            check_state, check_pass, check_count = self.online.Check(0.75)
+            check_state, check_pass, check_count = self.online.Check(self.config['settings']['online_check_threshold'])
             if check_state:
                 if not last_online_check:
                     logger.info("Online Check Passed with {} Passes".format(check_pass))
