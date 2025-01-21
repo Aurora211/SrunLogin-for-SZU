@@ -27,7 +27,7 @@ class Online:
             'Pragma': 'no-cache',
             'User-Agent': kwargs.get('user_agent', "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
         }
-    def Check(self, threshold: float = 0.5) -> bool:
+    def Check(self, threshold: float = 0.6) -> bool:
         total_count = len(self.config)
         pass_count = 0
         for i in range(total_count):

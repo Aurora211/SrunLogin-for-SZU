@@ -27,18 +27,23 @@ class Manual:
         self.online_check_duration  = self.config['settings']['online_check_duration']
 
         self.srun = SrunLogin(
-            login_page_url          = self.config['meta']['portal']['domain'] + self.config['meta']['portal']['login_page'],
-            challenge_api_url       = self.config['meta']['portal']['domain'] + self.config['meta']['portal']['challenge_api'],
-            login_api_url           = self.config['meta']['portal']['domain'] + self.config['meta']['portal']['login_api'],
-            callback_parse_regex    = self.config['meta']['portal']['regex']['callback'],
-            page_parse_regex        = self.config['meta']['portal']['regex']['page'],
-            callback_str            = self.config['meta']['portal']['callback'],
-            skip_ssl_verify         = self.config['settings']['skip_ssl_verify'],
-            request_timeout         = self.config['settings']['request_timeout'],
-            login_fixed_parameters  = self.config['meta']['portal']['login_parameters'],
-            user_agent              = self.config['meta']['user_agent']['request'],
-            http_proxy              = self.config['meta']['proxy']['login']['http'],
-            https_proxy             = self.config['meta']['proxy']['login']['https']
+            login_page_url             = self.config['meta']['portal']['domain'] + self.config['meta']['portal']['login_page'],
+            challenge_api_url          = self.config['meta']['portal']['domain'] + self.config['meta']['portal']['challenge_api'],
+            login_api_url              = self.config['meta']['portal']['domain'] + self.config['meta']['portal']['login_api'],
+            callback_parse_regex       = self.config['meta']['portal']['regex']['callback'],
+            page_parse_regex           = self.config['meta']['portal']['regex']['page'],
+            callback_str               = self.config['meta']['portal']['callback'],
+            skip_ssl_verify            = self.config['settings']['skip_ssl_verify'],
+            timeout                    = self.config['settings']['request_timeout'],
+            add_time_stamp_to_callback = self.config['meta']['portal']['add_time_stamp_to_callback'],
+            login_success_key          = self.config['meta']['portal']['login_success']['key'],
+            login_success_value        = self.config['meta']['portal']['login_success']['value'],
+            nameservers                = self.config['meta']['portal']['nameservers'],
+            hosts                      = self.config['meta']['portal']['hosts'],
+            login_fixed_parameters     = self.config['meta']['portal']['login_parameters'],
+            user_agent                 = self.config['meta']['user_agent']['request'],
+            http_proxy                 = self.config['meta']['proxy']['login']['http'],
+            https_proxy                = self.config['meta']['proxy']['login']['https']
         )
         self.online = Online(
             url_config              = self.config['meta']['online_check'],

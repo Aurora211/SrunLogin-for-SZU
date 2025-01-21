@@ -16,48 +16,75 @@ import time
 
 if __name__ == "__main__":
     from Encryption import Base64, MD5, SHA1, Xencode
+    from DNS import CustomDnsRequestHandler
 else:
     from .Encryption import Base64, MD5, SHA1, Xencode
+    from .DNS import CustomDnsRequestHandler
 
 logger = logging.getLogger(__name__)
 
 class SrunLogin:
-    def __init__(self, **kwargs):
+    def __init__(
+            self,
+            login_page_url: str = "https://net.szu.edu.cn/srun_portal_pc",
+            challenge_api_url: str = "https://net.szu.edu.cn/cgi-bin/get_challenge",
+            login_api_url: str = "https://net.szu.edu.cn/cgi-bin/srun_portal",
+            page_parse_regex: str = r"<script>[ \n]+var CONFIG = [\{ \n]+([A-Za-z0-9 :'\",\.\-|/\n\{\}]+)\n[ ]+\};[ \n]+</script>",
+            callback_parse_regex: str = r"({[A-Za-z0-9\":,_\. ]+})",
+            callback_str: str = "callback",
+            login_fixed_parameters: Dict = {
+                "n": "200",
+                "type": "1",
+                "acid": "2",
+                "enc": "srun_bx1",
+                "os": "Windows 10",
+                "name": "windows",
+                "double_stack": False,
+            },
+            skip_ssl_verify: bool = False,
+            timeout: int = 5,
+            add_time_stamp_to_callback: bool = True,
+            http_proxy: str | None = None,
+            https_proxy: str | None = None,
+            login_success_key: str = "suc_msg",
+            login_success_value: str = "login_ok",
+            user_agent: str = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            nameservers: List[str] = ["192.168.247.6", "192.168.247.26"],
+            hosts: Dict[str, str] = {},
+            **kwargs
+    ) -> None:
         # Essential URLs
-        self.url_login_page     = kwargs.get("login_page_url", "https://net.szu.edu.cn/srun_portal_pc")
-        self.url_challenge_api  = kwargs.get("challenge_api_url", "https://net.szu.edu.cn/cgi-bin/get_challenge")
-        self.url_login_api      = kwargs.get("login_api_url", "https://net.szu.edu.cn/cgi-bin/srun_portal")
+        self.url_login_page     = login_page_url
+        self.url_challenge_api  = challenge_api_url
+        self.url_login_api      = login_api_url
         # Essential Regex
-        self.regex_page     = kwargs.get("page_parse_regex", r"<script>[ \n]+var CONFIG = [\{ \n]+([A-Za-z0-9 :'\",\.\-|/\n\{\}]+)\n[ ]+\};[ \n]+</script>")
-        self.regex_callback = kwargs.get("callback_parse_regex", r"({[A-Za-z0-9\":,_\. ]+})")
-        self.callback_str   = kwargs.get("callback_str", "callback")
+        self.regex_page     = page_parse_regex
+        self.regex_callback = callback_parse_regex
+        self.callback_str   = callback_str
         # Essential Parameters
-        self.login_fixed_parameters = kwargs.get("login_fixed_parameters", {
-            "n"             : "200",
-            "type"          : "1",
-            "acid"          : "5",
-            "enc"           : "srun_bx1",
-            "os"            : "Windows 10",
-            "name"          : "windows",
-            "double_stack"  : False,
-        })
+        self.login_fixed_parameters = login_fixed_parameters
         # Optional Parameters
-        self.skip_ssl_verify            = kwargs.get("skip_ssl_verify", False)
-        self.time_out                   = kwargs.get("request_timeout", 5)
-        self.add_time_stamp_to_callback = kwargs.get("add_time_stamp_to_callback", True)
+        self.skip_ssl_verify            = skip_ssl_verify
+        self.time_out                   = timeout
+        self.add_time_stamp_to_callback = add_time_stamp_to_callback
         self.proxys                     = {
-            "http": None if kwargs.get("http_proxy", None) == "None" else kwargs.get("http_proxy", None),
-            "https": None if kwargs.get("https_proxy", None) == "None" else kwargs.get("https_proxy", None)
+            "http": None if http_proxy == "None" else http_proxy,
+            "https": None if https_proxy == "None" else https_proxy
         }
         self.login_success_keypair      = (
-            kwargs.get("login_success_key", "suc_msg"),
-            kwargs.get("login_success_value", "login_ok")
+            login_success_key,
+            login_success_value
         )
         self.header                     = {
             "Cache-Control": "no-cache",
             "Pragma": "no-cache",
-            "User-Agent": kwargs.get("user_agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+            "User-Agent": user_agent
         }
+        # DNS Handler
+        self.dns_handler = CustomDnsRequestHandler(
+            nameservers=nameservers,
+            hosts=hosts,
+        )
     def login(
             self,
             username: str,
@@ -129,7 +156,14 @@ class SrunLogin:
         return login_state, login_status, info
 
     def __get_login_page(self) -> requests.Response:
-        return requests.get(self.url_login_page, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify, proxies=self.proxys)
+        return self.dns_handler.request_with_dns_resolver(
+            "GET",
+            url=self.url_login_page,
+            headers=self.header,
+            timeout=self.time_out,
+            verify=not self.skip_ssl_verify,
+            proxies=self.proxys
+        )
     def __get_login_config(self) -> Dict:
         config = {}
         login_page = self.__get_login_page().text
@@ -160,7 +194,15 @@ class SrunLogin:
             "ip": ip,
             "_": int(time.time() * 1000)
         }
-        return requests.get(self.url_challenge_api, params=params, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify, proxies=self.proxys)
+        return self.dns_handler.request_with_dns_resolver(
+            "GET",
+            url=self.url_challenge_api,
+            params=params,
+            headers=self.header,
+            timeout=self.time_out,
+            verify=not self.skip_ssl_verify,
+            proxies=self.proxys
+        )
     def __get_challenge_config(self, username: str, ip: str, add_time_stamp_to_callback: bool = True) -> str:
         challenge = self.__get_challenge_api(username, ip, add_time_stamp_to_callback).text
         config_raw = re.search(self.regex_callback, challenge).group(1)
@@ -250,7 +292,15 @@ class SrunLogin:
             "captchaVal": "",
             "_": int(time.time() * 1000)
         }
-        return requests.get(self.url_login_api, params=params, headers=self.header, timeout=self.time_out, verify=not self.skip_ssl_verify, proxies=self.proxys)
+        return self.dns_handler.request_with_dns_resolver(
+            "GET",
+            url=self.url_login_api,
+            params=params,
+            headers=self.header,
+            timeout=self.time_out,
+            verify=not self.skip_ssl_verify,
+            proxies=self.proxys
+        )
     def __parse_login_response(self, response: requests.Response) -> Dict:
         response_text = response.text
         status_raw = re.search(self.regex_callback, response_text).group(1)

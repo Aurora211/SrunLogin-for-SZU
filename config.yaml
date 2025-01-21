@@ -37,14 +37,21 @@ meta:
         -
             url: "https://www.jd.com"
             key: "京东"
-        -
-            url: "https://www.douban.com"
-            key: "豆瓣"
     portal:                                                 # 登录门户 Portal 配置
+        nameservers:                                        # 登录门户内部DNS
+            - "192.168.247.6"
+            - "192.168.247.26"
+        hosts:                                              # 本地DNS映射表
+            net.szu.edu.cn:
+                - "172.31.63.36"
         domain: "https://net.szu.edu.cn"                    # 登录门户域名
         login_page: "/srun_portal_pc"                       # 登录页面
         challenge_api: "/cgi-bin/get_challenge"             # 获取挑战问题 API
         login_api: "/cgi-bin/srun_portal"                   # 登录 API
+        add_time_stamp_to_callback: true                    # 是否附加时间戳
+        login_success:                                      # 登陆成功检测关键词
+            key: "suc_msg"
+            value: "login_ok"
         login_parameters:                                   # 登录参数（请勿随意修改）
             n: "200"                                        # 请勿修改
             type: "1"                                       # 请勿修改
