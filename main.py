@@ -16,7 +16,7 @@ from getpass import getpass
 from typing import Optional, Union, Callable, List, Dict, Tuple, Any, cast
 
 from Config import GenerateConfig, Args
-from Log import logging_console_handler, logging_file_handler
+from Logger import logging_console_handler, logging_file_handler
 from SrunLogin import SrunLogin
 
 parser = argparse.ArgumentParser("Srun Network Python Decrypter")
