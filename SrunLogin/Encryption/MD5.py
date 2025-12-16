@@ -1,19 +1,19 @@
 # ===== Srun Network Python Decrypter =====
-# MD5 Encryption Module
+# 对密码进行MD5加密
 # DO NOT MODIFY THIS FILE UNLESS YOU KNOW WHAT YOU ARE DOING.
 # =========================================
 # Author: Aurora211
-# Date: 2025-01-14
-# Version: 0.1.0
+# Date: 2025-12-16
+# Version: 2.0
 # =========================================
 
-__MD5_STRING_ENCODE = 'utf-8'
+MD5_STRING_ENCODE = 'utf-8'
 
 import hmac
 import hashlib
 
 def MD5(password: str, token: str):
-    return hmac.new(token.encode(__MD5_STRING_ENCODE), password.encode(__MD5_STRING_ENCODE), hashlib.md5).hexdigest()
+    return hmac.new(token.encode(MD5_STRING_ENCODE), password.encode(MD5_STRING_ENCODE), hashlib.md5).hexdigest()
 
 if __name__ == '__main__':
     """

@@ -5,38 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Login Mode",
+            "name": "单次登录模式",
             "type": "debugpy",
             "request": "launch",
-            "program": "single.py",
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Manual Mode",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "args": "${command:pickArgs}"
+        },{
+            "name": "守护进程模式",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
             "args": [
-                "--manual"
+                "--daemon"
             ]
-        },
-        {
-            "name": "Compile",
+        },{
+            "name": "测试",
             "type": "debugpy",
             "request": "launch",
-            "program": "compile.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--version",
-                "${command:pickArgs}"
-            ]
-        },
-        {
-            "name": "Current",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
+            "program": "test.py",
             "console": "integratedTerminal"
         }
     ]

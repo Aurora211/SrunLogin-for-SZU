@@ -1,10 +1,10 @@
 # ===== Srun Network Python Decrypter =====
-# Xencode Encryption Module
+# 对密码进行Xencode加密
 # DO NOT MODIFY THIS FILE UNLESS YOU KNOW WHAT YOU ARE DOING.
 # =========================================
 # Author: Aurora211
-# Date: 2025-01-14
-# Version: 0.1.0
+# Date: 2025-12-16
+# Version: 2.0
 # =========================================
 
 import math
@@ -76,7 +76,6 @@ def Xencode(msg, key):
         q = q - 1
     return _lencode(pwd, False)
 
-if __name__ == '__main__':
-    str1=Xencode('{"username":"123","password":"123","ip":"127.0.0.1","acid":"1","enc_ver":"srun_bx1"}',"123")
-    print(type(str1))   # If it prints <class 'str'>, then it is ok.
-    
+
+
+

@@ -1,18 +1,18 @@
 # ===== Srun Network Python Decrypter =====
-# SHA1 Encryption Module
+# 对密码进行SHA1加密
 # DO NOT MODIFY THIS FILE UNLESS YOU KNOW WHAT YOU ARE DOING.
 # =========================================
 # Author: Aurora211
-# Date: 2025-01-14
-# Version: 0.1.0
+# Date: 2025-12-16
+# Version: 2.0
 # =========================================
 
-__SHA1_STRING_ENCODE = 'utf-8'
+SHA1_STRING_ENCODE = 'utf-8'
 
 import hashlib
 
 def SHA1(message: str):
-    return hashlib.sha1(message.encode(__SHA1_STRING_ENCODE)).hexdigest()
+    return hashlib.sha1(message.encode(SHA1_STRING_ENCODE)).hexdigest()
 
 if __name__ == '__main__':
     """

@@ -3,12 +3,12 @@
 # DO NOT MODIFY THIS FILE UNLESS YOU KNOW WHAT YOU ARE DOING.
 # =========================================
 # Author: Aurora211
-# Date: 2025-01-14
-# Version: 0.1.0
+# Date: 2025-12-16
+# Version: 2.0
 # =========================================
 
-__PADDING_CHARACTER = "="
-__BASE64_ALPHA = "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA"
+PADDING_CHARACTER = "="
+BASE64_ALPHA = "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA"
 
 def _get_byte(s, i):
     x = ord(s[i])
@@ -30,22 +30,22 @@ def Base64(s):
     
     for i in range(0, i_max, 3):
         b10 = (_get_byte(s, i) << 16) | (_get_byte(s, i + 1) << 8) | _get_byte(s, i + 2)
-        x.append(__BASE64_ALPHA[(b10 >> 18) & 63])
-        x.append(__BASE64_ALPHA[(b10 >> 12) & 63])
-        x.append(__BASE64_ALPHA[(b10 >> 6) & 63])
-        x.append(__BASE64_ALPHA[b10 & 63])
+        x.append(BASE64_ALPHA[(b10 >> 18) & 63])
+        x.append(BASE64_ALPHA[(b10 >> 12) & 63])
+        x.append(BASE64_ALPHA[(b10 >> 6) & 63])
+        x.append(BASE64_ALPHA[b10 & 63])
     
     i = i_max
 
     if len(s) - i_max == 1:
         b10 = _get_byte(s, i) << 16
-        x.append(__BASE64_ALPHA[(b10 >> 18) & 63])
-        x.append(__BASE64_ALPHA[(b10 >> 12) & 63] + __PADDING_CHARACTER * 2)
+        x.append(BASE64_ALPHA[(b10 >> 18) & 63])
+        x.append(BASE64_ALPHA[(b10 >> 12) & 63] + PADDING_CHARACTER * 2)
     elif len(s) - i_max == 2:
         b10 = (_get_byte(s, i) << 16) | (_get_byte(s, i + 1) << 8)
-        x.append(__BASE64_ALPHA[(b10 >> 18) & 63])
-        x.append(__BASE64_ALPHA[(b10 >> 12) & 63])
-        x.append(__BASE64_ALPHA[(b10 >> 6) & 63] + __PADDING_CHARACTER)
+        x.append(BASE64_ALPHA[(b10 >> 18) & 63])
+        x.append(BASE64_ALPHA[(b10 >> 12) & 63])
+        x.append(BASE64_ALPHA[(b10 >> 6) & 63] + PADDING_CHARACTER)
     else:
         pass
     
